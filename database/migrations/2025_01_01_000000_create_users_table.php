@@ -5,21 +5,18 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
-{
-    /**
-     * Run the migrations.
-     */
+{ 
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string(column: 'phone_number')->unique();
+            $table->string('phone_number')->unique();
             $table->foreignId('role_id')->constrained('roles');
             $table->timestamp('email_verified_at')->nullable();
-            $table->string(column: 'pin')->nullable();
-            $table->string('password');   
+            $table->string('pin')->nullable();
+            $table->string('password');
             $table->enum('type', ['INDIVIDUAL', 'BUSINESS']);
             $table->enum('kyc_status', ['PENDING', 'VERIFIED', 'REJECTED']);
             $table->rememberToken();

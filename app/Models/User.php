@@ -24,7 +24,8 @@ class User extends Authenticatable
         'password',
         'phone',
         'type',      
-        'account_id'   
+        'account_id',
+        'role_id'
     ];
 
     public function transfers(): HasMany{
