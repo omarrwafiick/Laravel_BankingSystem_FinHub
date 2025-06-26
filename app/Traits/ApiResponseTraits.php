@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Traits;
+
+use Illuminate\Validation\ValidationException;
+ 
  
 
 trait ApiResponseTraits{
@@ -26,6 +29,7 @@ trait ApiResponseTraits{
         }
         return ['content' => $responseStructure, 'statusCode' => $statusCode, 'headers'=> $headers];
     }
+    
      public function apiResponse(array $data = [], int $statusCode = 200, array $headers){
         $result = $this->parseData($data, $statusCode, $headers);
         return response()->json($result['content'], $result['statusCode'], $result['headers']);
@@ -49,5 +53,9 @@ trait ApiResponseTraits{
         return $this->sendError($message, 403);
     }
 
+    public function sendValidationError(ValidationException $exception){
+        return $this->apiResponse(
+            ['success'=> false, 'errors'=> $exception->errors(), 'message'=> $exception->getMessage()], 400);
+    } 
      
 }
