@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\DTOs\UserDto;
-use App\Http\Requests\RegisterationRequest; 
-use App\Models\User;
+use App\Http\Requests\RegisterationRequest;  
 use Illuminate\Http\Request;
-use Illuminate\Services\UserService;
+use App\Services\UserService;
 
 class AuthController extends Controller
 { 
@@ -14,10 +14,9 @@ class AuthController extends Controller
 
     }
     public function register(RegisterationRequest $request){
-        $validation = $request->validated();
         $userDto = UserDto::fromRequestToDto($request);
         $user = $this->userService->createUser($userDto);
-        return response()->json(['user'=> $user, 'success'=> true]);
+        return $this->sendSuccess(['user'=> $user], "Successfull Registration");
     }
 
     public function login(Request $request){
