@@ -10,17 +10,18 @@ class Transaction extends Model
 {
     use SoftDeletes;
     protected $fillable = [
+        'id',
+        'user_id',
+        'reference',
+        'transfer_id',
         'account_id',
-        'type',
         'amount',
         'balance_before',
         'balance_after',
-        'description',
-        'reference',
+        'category',
         'confirmed',
-        'meta',
-        'transfer_id',
-        'user_id'
+        'description',
+        'meta'
     ];
 
     public function owner(): BelongsTo{

@@ -9,10 +9,12 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class AccountDto implements DtoInterface
 {
-    public string $id;
+    public int $id;
     public string $account_number;
+    public string $user_id;
     public string $status;
     public string $currency;
+    public int|float $balance;
     public string $type; 
     public ?Carbon $created_at = null;
     public ?Carbon $updated_at = null;
@@ -20,7 +22,9 @@ class AccountDto implements DtoInterface
     public static function fromRequestToDto(FormRequest $request): self
     {
         $dto = new self(); 
+        $dto->balance = $request->balance;
         $dto->account_number = $request->input("account_number");
+        $dto->user_id = $request->input("user_id");
         $dto->type = $request->input("type");
         $dto->currency = $request->input("currency");
         $dto->status = $request->input("status");  
@@ -31,6 +35,8 @@ class AccountDto implements DtoInterface
     {
         $dto = new self();
         $dto->id = $model->id;
+        $dto->user_id = $model->user_id;
+        $dto->balance = $model->balance;
         $dto->account_number = $model->account_number;
         $dto->currency = $model->currency; 
         $dto->status = $model->status;
@@ -44,6 +50,8 @@ class AccountDto implements DtoInterface
     {
         return [
             'id' => $model->id,
+            'balance' => $model->balance,
+            'user_id' => $model->user_id,
             'account_number' => $model->account_number,
             'currency' => $model->currency,
             'status' => $model->status,

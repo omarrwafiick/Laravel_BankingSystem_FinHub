@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\AuditAction;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,7 +12,7 @@ return new class extends Migration
         Schema::create('audit_logs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->enum('action',['LOGIN','TRANSFER_ATTEMPT']);
+            $table->enum('actions', array_column(AuditAction::cases(), 'value')); 
             $table->string('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();

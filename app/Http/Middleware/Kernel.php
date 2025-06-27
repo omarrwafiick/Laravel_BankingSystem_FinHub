@@ -38,9 +38,7 @@ class Kernel extends HttpKernel
         ],
     ];
 
-    /**
-     * Individual route middleware.
-     */
+    
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
@@ -49,5 +47,6 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'has.pin' => \App\Http\Middleware\SetPinMiddleware::class,
     ];
 }

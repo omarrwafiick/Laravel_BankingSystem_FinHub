@@ -16,9 +16,7 @@ return new class extends Migration
             $table->foreignId('role_id')->constrained('roles');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('pin')->nullable();
-            $table->string('password');
-            $table->enum('type', ['INDIVIDUAL', 'BUSINESS']);
-            $table->enum('kyc_status', ['PENDING', 'VERIFIED', 'REJECTED']);
+            $table->string('password'); 
             $table->rememberToken();
             $table->timestamps();
         });

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OnBoardingController;
+use App\Http\Controllers\TransactionController;
   
 Route::prefix("auth")->group(function () { 
 
@@ -16,9 +17,22 @@ Route::prefix("auth")->group(function () {
     
 }); 
 
-Route::middleware("auth:sanctum")->group(function () { 
-   Route::post(uri: 'onboarding/pin', [OnBoardingController::class,"createPinToUser"]);
-   Route::post(uri: 'onboarding/pin/validate', [OnBoardingController::class,"validatePin"]);   
-   Route::post(uri: 'account/number', [AccountController::class,"createAccountNumber"]); 
-   Route::put(uri: 'account', [AccountController::class,"updateccount"]);  
+Route::middleware("auth:sanctum")->group(function () {
+
+   Route::prefix("onboarding")->group(function () {
+      Route::post(uri: 'pin', [OnBoardingController::class,"createPinToUser"]);
+      Route::post(uri: 'pin/validate', [OnBoardingController::class,"validatePin"]);
+   }); 
+
+   Route::prefix("account")->group(function () {
+      Route::post(uri: 'number', [AccountController::class,"createAccountNumber"]); 
+      Route::put(uri: '', [AccountController::class,"updateccount"]);   
+   });   
+
+   Route::middleware("has.pin")->group(function(){
+      Route::prefix("transaction")->group(function () {
+         Route::post(uri: 'deposit', [TransactionController::class,"deposite"]);  
+      });  
+   });
+
 });
