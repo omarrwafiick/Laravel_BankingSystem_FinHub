@@ -18,6 +18,6 @@ interface ITransactionService{
     public function getTransactionByReference(string $reference):Transaction ;
     public function getTransactionByAccountNumber(string $account_number):Transaction;
     public function getTransactionByUserId(string $user_id):Transaction ;
-    public function transactionHistory(AccountDto $accountDto, Carbon $from, Carbon $to):Collection;
+    public function transactionHistory(int $account_number, string $category, Carbon $from, Carbon $to):Collection;
     public function updateTransaction(string $reference, int|float $balance);
 }

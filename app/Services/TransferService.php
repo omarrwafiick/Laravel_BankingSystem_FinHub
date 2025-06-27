@@ -2,11 +2,12 @@
 
 namespace App\Services;
 
+use App\Contracts\ITransferService;
 use App\DTOs\TransferDto;
 use App\Enums\TransferStatus;
 use App\Models\Transfer; 
  
-class TransferService  
+class TransferService implements ITransferService  
 { 
     public function createTransfer(TransferDto $transferDto):int{
         $transfer = Transfer::create([

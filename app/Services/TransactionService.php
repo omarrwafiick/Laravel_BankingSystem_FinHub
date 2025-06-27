@@ -2,11 +2,9 @@
  
 namespace App\Services;
 
-use App\Contracts\ITransactionService;
-use App\DTOs\AccountDto;
+use App\Contracts\ITransactionService; 
 use App\DTOs\TransactionDto;
-use App\Enums\TransactionCategory;
-use App\Models\Account;
+use App\Enums\TransactionCategory; 
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -56,10 +54,11 @@ class TransactionService implements ITransactionService {
         return $this->modelQuery()->where('user_id', $user_id)->first();
     }
 
-    public function transactionHistory(AccountDto $accountDto, Carbon $from, Carbon $to): Collection
+    public function transactionHistory(int $account_number, string $category, Carbon $from, Carbon $to): Collection
     {
         return Transaction::query()
-            ->where('account_id', $accountDto->id)  
+            ->where('account_number', $account_number)  
+            ->where('category', $category)
             ->whereBetween('created_at', [$from->startOfDay(), $to->endOfDay()])
             ->orderByDesc('created_at')
             ->get();
@@ -69,7 +68,7 @@ class TransactionService implements ITransactionService {
         $transaction = $this->getTransactionByReference($reference);
         $transaction->balance = $balance;
         $transaction->confirmed = true;
-        $transaction->save();
+        $transaction->save(); 
     }
 }
     

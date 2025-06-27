@@ -34,6 +34,7 @@ Route::middleware(["auth:sanctum", 'throttle:30,1'])->group(function () {
          Route::post(uri: 'transfer', [TransactionController::class,"transfer"]);  
          Route::post(uri: 'deposit', [TransactionController::class,"deposite"]);  
          Route::post(uri: 'withdraw', [TransactionController::class,"withdraw"]);  
+         Route::post(uri: 'history', [TransactionController::class,"transactionHistory"]);  
       });  
    });
 
