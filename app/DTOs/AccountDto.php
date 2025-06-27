@@ -1,31 +1,29 @@
 <?php
 
 namespace App\DTOs;
-
-use App\Http\Requests\RegisterationRequest;
+ 
 use App\Contracts\DtoInterface; 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest; 
 
-class UserDto implements DtoInterface
+class AccountDto implements DtoInterface
 {
     public string $id;
-    public string $name;
-    public string $email;
-    public string $password;
-    public string $phone;
-    public ?string $pin = null;
+    public string $account_number;
+    public string $status;
+    public string $currency;
+    public string $type; 
     public ?Carbon $created_at = null;
     public ?Carbon $updated_at = null;
  
     public static function fromRequestToDto(FormRequest $request): self
     {
         $dto = new self(); 
-        $dto->name = $request->input("name");
-        $dto->email = $request->input("email");
-        $dto->password = $request->input("password");
-        $dto->phone = $request->input("phone");  
+        $dto->account_number = $request->input("account_number");
+        $dto->type = $request->input("type");
+        $dto->currency = $request->input("currency");
+        $dto->status = $request->input("status");  
         return $dto;
     }
  
@@ -33,10 +31,10 @@ class UserDto implements DtoInterface
     {
         $dto = new self();
         $dto->id = $model->id;
-        $dto->name = $model->name;
-        $dto->email = $model->email; 
-        $dto->phone = $model->phone;
-        $dto->pin = $model->pin;
+        $dto->account_number = $model->account_number;
+        $dto->currency = $model->currency; 
+        $dto->status = $model->status;
+        $dto->type = $model->type;
         $dto->created_at = $model->created_at instanceof Carbon ? $model->created_at : new Carbon($model->created_at);
         $dto->updated_at = $model->updated_at instanceof Carbon ? $model->updated_at : new Carbon($model->updated_at);
         return $dto;
@@ -46,10 +44,10 @@ class UserDto implements DtoInterface
     {
         return [
             'id' => $model->id,
-            'name' => $model->name,
-            'email' => $model->email,
-            'phone' => $model->phone_number,
-            'pin' => $model->pin,
+            'account_number' => $model->account_number,
+            'currency' => $model->currency,
+            'status' => $model->status,
+            'type' => $model->type,
             'created_at' => optional($model->created_at)->toDateTimeString(),
             'updated_at' => optional($model->updated_at)->toDateTimeString(),
         ];

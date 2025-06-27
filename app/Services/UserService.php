@@ -7,6 +7,7 @@ use App\DTOs\UserDto;
 use App\Exceptions\InvalidPinLengthException;
 use App\Exceptions\PinNotSetException;
 use App\Exceptions\PinWasSetException;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -17,11 +18,13 @@ class UserService implements IUserService
 {
     public function createUser(UserDto $dto): Builder | Model    
     {
+        $role = Role::where('name', 'CUSTOMER')->first();
         return User::query()->create([
             'name' - $dto->name,
             'email' - $dto->email,
             'password' - $dto->password,
             'phone_number' - $dto->phone,
+            'role_id' => $role->id
         ]);
     }
 

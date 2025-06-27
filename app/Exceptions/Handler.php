@@ -117,6 +117,17 @@ class Handler extends ExceptionHandler{
                 ],  $status_code);
             } 
 
+            if($e instanceof AccountNumberWasSetException){ 
+                $status_code = Response::HTTP_BAD_REQUEST;
+                return $this->apiResponse([
+                    'message' => $exception,
+                    'success' => false,
+                    'exception' => $exception,
+                    'error_code' =>  $status_code,
+                    'errors'=> $status_code 
+                ],  $status_code);
+            }
+
             if($e instanceof \Exception){ 
                 return $this->apiResponse([
                     'message' => "Can't handle request at the moment please try again",
