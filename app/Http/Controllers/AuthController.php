@@ -12,9 +12,8 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 { 
-    public function __construct(private readonly UserService $userService) {
-
-    }
+    public function __construct(private readonly UserService $userService) {}
+    
     public function register(RegisterationRequest $request){
         $userDto = UserDto::fromRequestToDto($request);
         $user = $this->userService->createUser($userDto);
@@ -35,7 +34,7 @@ class AuthController extends Controller
         $user = $request->user(); 
         return $this->sendSuccess(['user'=> $user, 'message' => 'Authenticated user'],200);
     }
-
+    
     public function logout(Request $request){ 
         $user = $request->user(); 
         $user->tokens()->delete();

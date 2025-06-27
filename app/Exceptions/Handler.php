@@ -10,6 +10,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Log;
 use Str;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Throwable;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response ;
@@ -82,6 +83,39 @@ class Handler extends ExceptionHandler{
                     'error_code' =>  $status_code 
                 ],  $status_code);
             }
+
+            if($e instanceof MethodNotAllowedException){ 
+                $status_code = Response::HTTP_METHOD_NOT_ALLOWED;
+                return $this->apiResponse([
+                    'message' => $exception,
+                    'success' => false,
+                    'exception' => $exception,
+                    'error_code' =>  $status_code,
+                    'errors'=> $status_code 
+                ],  $status_code);
+            } 
+
+            if($e instanceof PinWasSetException){ 
+                $status_code = Response::HTTP_BAD_REQUEST;
+                return $this->apiResponse([
+                    'message' => $exception,
+                    'success' => false,
+                    'exception' => $exception,
+                    'error_code' =>  $status_code,
+                    'errors'=> $status_code 
+                ],  $status_code);
+            } 
+
+            if($e instanceof PinNotSetException){ 
+                $status_code = Response::HTTP_BAD_REQUEST;
+                return $this->apiResponse([
+                    'message' => $exception,
+                    'success' => false,
+                    'exception' => $exception,
+                    'error_code' =>  $status_code,
+                    'errors'=> $status_code 
+                ],  $status_code);
+            } 
 
             if($e instanceof \Exception){ 
                 return $this->apiResponse([
