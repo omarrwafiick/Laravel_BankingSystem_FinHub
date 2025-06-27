@@ -12,7 +12,8 @@ use Illuminate\Database\Eloquent\Collection;
 interface ITransactionService{
     public function modelQuery():Builder;
     public function createTransaction(TransactionDto $transactionDto) : Transaction;
-    public function generateReference():string;    
+    public function generateTransactionReference():string; 
+    public function generateTransferReference():string;
     public function getTransactionById(int $id):Transaction;
     public function getTransactionByReference(string $reference):Transaction ;
     public function getTransactionByAccountNumber(string $account_number):Transaction;

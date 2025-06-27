@@ -5,11 +5,13 @@ namespace App\Contracts;
 use App\DTOs\AccountDto;
 use App\DTOs\DepositDto;
 use App\DTOs\TransactionDto;
+use App\DTOs\TransferDto;
 use App\DTOs\UserDto;
 use App\DTOs\WithDrawDto;
 use App\Models\Account; 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 interface IAccountService{
     public function modelQuery():Builder;
@@ -20,6 +22,7 @@ interface IAccountService{
     public function hasAccount(UserDto $userDto) : bool;
     public function deposit(DepositDto $depositDto): TransactionDto;
     public function withdraw(WithDrawDto $withDrawDto ): TransactionDto;
+    public function transfer(TransferDto $transferDto);
     public function accountExists(Builder $query);
-     public function canWithdraw(int|float $amount, Account $account): bool;
+    public function canWithdraw(int|float $amount, Account $account): bool;
 }

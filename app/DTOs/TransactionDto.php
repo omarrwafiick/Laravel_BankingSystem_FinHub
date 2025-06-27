@@ -4,6 +4,7 @@ namespace App\DTOs;
  
 use App\Contracts\DtoInterface; 
 use App\Enums\TransactionCategory;
+use App\Models\Account;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest; 
@@ -27,8 +28,7 @@ class TransactionDto implements DtoInterface
     public static function fromRequestToDto(FormRequest $request): self
     {
         $dto = new self(); 
-        $dto->user_id = $request->input("user_id");
-        $dto->reference = $request->input("reference");
+        $dto->user_id = $request->input("user_id"); 
         $dto->transfer_id = $request->input("transfer_id");
         $dto->account_id = $request->input("account_id");  
         $dto->amount = $request->input("amount");  
@@ -78,7 +78,7 @@ class TransactionDto implements DtoInterface
         ];
     }
     
-    public function forDeposit(AccountDto $accountDto, int|float $amount, string $reference, string|null $description, int $transfer_id)
+    public static function forDeposit(AccountDto $accountDto, int|float $amount, string $reference, string|null $description, int $transfer_id)
     { 
         $dto = new self();
         $dto->user_id = $accountDto->user_id;
@@ -91,7 +91,7 @@ class TransactionDto implements DtoInterface
         return $dto;
     }
 
-    public function forWithdraw(AccountDto $accountDto, int|float $amount, string $reference, string|null $description, int $transfer_id)
+    public static function forWithdraw(AccountDto $accountDto, int|float $amount, string $reference, string|null $description, int $transfer_id)
     { 
         $dto = new self();
         $dto->user_id = $accountDto->user_id;

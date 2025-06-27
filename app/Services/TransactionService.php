@@ -32,7 +32,11 @@ class TransactionService implements ITransactionService {
         return $transaction;
     }
 
-    public function generateReference():string{
+    public function generateTransactionReference():string{
+        return Str::upper('TA'.'/'.Carbon::now()->getTimestampMs().'/'.Str::random(4));
+    } 
+
+    public function generateTransferReference():string{
         return Str::upper('TF'.'/'.Carbon::now()->getTimestampMs().'/'.Str::random(4));
     } 
 

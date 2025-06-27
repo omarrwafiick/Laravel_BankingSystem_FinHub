@@ -15,9 +15,9 @@ class DepositEvent
     use Dispatchable, InteractsWithSockets, SerializesModels;
  
     public function __construct(
-        public readonly TransactionDto $transactionDto, 
-        public readonly AccountDto $accountDto, 
-        public readonly Account $lockedAccount)
+        public TransactionDto $transactionDto, 
+        public AccountDto $accountDto, 
+        public Account $lockedAccount)
     {}
  
     public function broadcastOn(): array

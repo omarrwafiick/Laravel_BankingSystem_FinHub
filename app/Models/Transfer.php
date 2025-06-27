@@ -12,9 +12,9 @@ class Transfer extends Model
     protected $fillable = [ 
         'sender_account_id', 
         'recipient_account_id',
-        'amount',
-        'description',
-        'initiated_by'
+        'amount',  
+        'reference',
+        'status'
     ]; 
     public function sender_account(): BelongsTo{
         return $this->belongsTo(Account::class,'sender_account_id');
