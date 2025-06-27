@@ -34,7 +34,7 @@ class Kernel extends HttpKernel
         'api' => [ 
             \App\Http\Middleware\EnforceJsonResponse::class,
             'throttle:api',
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class, 
         ],
     ];
 

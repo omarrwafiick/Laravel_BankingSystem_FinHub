@@ -4,12 +4,11 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DepositRequest extends FormRequest
-{
-     
+class WithDrawRequest extends FormRequest
+{ 
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
  
     public function rules(): array

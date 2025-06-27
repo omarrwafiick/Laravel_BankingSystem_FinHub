@@ -91,6 +91,19 @@ class TransactionDto implements DtoInterface
         return $dto;
     }
 
+    public function forWithdraw(AccountDto $accountDto, int|float $amount, string $reference, string|null $description, int $transfer_id)
+    { 
+        $dto = new self();
+        $dto->user_id = $accountDto->user_id;
+        $dto->reference = $reference;
+        $dto->transfer_id = $transfer_id;
+        $dto->account_id = $accountDto->id;
+        $dto->amount = $amount;
+        $dto->category = TransactionCategory::WITHDRAW->value;
+        $dto->description =  $description;
+        return $dto;
+    }
+ 
     public static function fromDepositToModel(TransactionDto $transactionDto)
     { 
         return [
@@ -99,7 +112,26 @@ class TransactionDto implements DtoInterface
             'reference' => $transactionDto->reference,
             'transfer_id' => $transactionDto->transfer_id,
             'account_id' => $transactionDto->account_id,
-            'amount' => $transactionDto->id,
+            'amount' => $transactionDto->amount,
+            'balance' => $transactionDto->balance,
+            'category' => $transactionDto->category,
+            'confirmed' => $transactionDto->confirmed,
+            'description' => $transactionDto->description,
+            'meta' => $transactionDto->meta, 
+            'created_at' => optional( $transactionDto->created_at)->toDateTimeString(),
+            'updated_at' => optional($transactionDto->updated_at)->toDateTimeString(),
+        ];
+    } 
+
+    public static function fromWithdrawToModel(TransactionDto $transactionDto)
+    { 
+        return [
+            'id' => $transactionDto->id,
+            'user_id' => $transactionDto->user_id,
+            'reference' => $transactionDto->reference,
+            'transfer_id' => $transactionDto->transfer_id,
+            'account_id' => $transactionDto->account_id,
+            'amount' => $transactionDto->amount,
             'balance' => $transactionDto->balance,
             'category' => $transactionDto->category,
             'confirmed' => $transactionDto->confirmed,

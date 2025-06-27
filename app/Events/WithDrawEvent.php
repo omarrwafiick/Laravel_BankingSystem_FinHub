@@ -10,7 +10,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class DepositEvent
+class WithDrawEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
  
@@ -18,12 +18,14 @@ class DepositEvent
         public readonly TransactionDto $transactionDto, 
         public readonly AccountDto $accountDto, 
         public readonly Account $lockedAccount)
-    {}
+    {
+        //
+    }
  
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('dipositing'),
+            new PrivateChannel('withdrawing'),
         ];
     }
 }

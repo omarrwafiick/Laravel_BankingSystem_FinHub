@@ -9,11 +9,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Account extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes; 
     protected $fillable = [
+        'id',
         'user_id',
         'account_number',  
+        'balance',   
         'type',            
+        'status',
         'currency',
     ]; 
 

@@ -17,7 +17,7 @@ Route::prefix("auth")->group(function () {
     
 }); 
 
-Route::middleware("auth:sanctum")->group(function () {
+Route::middleware(["auth:sanctum", 'throttle:30,1'])->group(function () {
 
    Route::prefix("onboarding")->group(function () {
       Route::post(uri: 'pin', [OnBoardingController::class,"createPinToUser"]);
@@ -32,6 +32,7 @@ Route::middleware("auth:sanctum")->group(function () {
    Route::middleware("has.pin")->group(function(){
       Route::prefix("transaction")->group(function () {
          Route::post(uri: 'deposit', [TransactionController::class,"deposite"]);  
+         Route::post(uri: 'withdraw', [TransactionController::class,"withdraw"]);  
       });  
    });
 

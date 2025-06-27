@@ -25,8 +25,8 @@ class TransactionService implements ITransactionService {
         if($transactionDto->category == TransactionCategory::DEPOSIT->value) { 
             $data = TransactionDto::fromDepositToModel($transactionDto);
         }
-        if($transactionDto->category == TransactionCategory::WITHDRAW->value) { 
-            //
+        if($transactionDto->category == TransactionCategory::WITHDRAW->value) {  
+            $data = TransactionDto::fromWithdrawToModel($transactionDto);
         }
         $transaction = $this->modelQuery()->create($data);
         return $transaction;

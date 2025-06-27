@@ -13,11 +13,10 @@ class Transaction extends Model
         'id',
         'user_id',
         'reference',
-        'transfer_id',
+        'transfer_id', 
         'account_id',
         'amount',
-        'balance_before',
-        'balance_after',
+        'balance', 
         'category',
         'confirmed',
         'description',
@@ -28,7 +27,7 @@ class Transaction extends Model
         return $this->belongsTo(User::class,'user_id');
     }
 
-     public function account(): BelongsTo{
+    public function account(): BelongsTo{
         return $this->belongsTo(related: Account::class, 'account_id');
     }
 

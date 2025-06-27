@@ -7,7 +7,10 @@ use App\DTOs\AccountDto;
 use App\DTOs\DepositDto;
 use App\DTOs\TransactionDto;
 use App\DTOs\UserDto; 
+use App\DTOs\WithDrawDto;
+use App\Enums\AccountStatus;
 use App\Events\DepositEvent;
+use App\Events\WithDrawEvent;
 use App\Exceptions\AccountNumberWasSetException;
 use App\Exceptions\InsufficientFundsException;
 use App\Models\Account; 
@@ -66,7 +69,7 @@ class AccountService implements IAccountService{
         return $this->modelQuery()->where('user_id', $userDto->id)->exists();
     }
 
-    public function deposit(DepositDto $depositDto ){
+    public function deposit(DepositDto $depositDto ): TransactionDto {
         $minimum_deposit = 500;
         if ($depositDto->amount < $minimum_deposit){
             throw new InsufficientFundsException('deposite amount should be greater than ' . $minimum_deposit);
@@ -83,20 +86,59 @@ class AccountService implements IAccountService{
 
             $transactionDto = new TransactionDto();
             $reference = $this->transactionService->generateReference(); 
-            $transactionDto->forDeposit($accountDto, $depositDto->amount, $reference, $depositDto->description, $depositDto->transfer_id);
+            $transactionDto = $transactionDto->forDeposit($accountDto, $depositDto->amount, $reference, $depositDto->description, $depositDto->transfer_id);
             
             event(new DepositEvent($transactionDto, $accountDto, $lockedAccount));
             DB::commit();
+            return $transactionDto;
         }
         catch(Exception $e){
             DB::rollBack();
-            throw new Exception($e->getMessage());
+            throw $e;
         }
     }
+
+    public function withdraw(WithDrawDto $withDrawDto): TransactionDto { 
+        try{
+            DB::beginTransaction();
+
+            $accountQuery = $this->modelQuery()->where('account_number', $withDrawDto->account_number);
+            $this->accountExists($accountQuery);
+ 
+            $lockedAccount = $accountQuery->lockForUpdate()->first();
+
+            $validateAccount = $this->canWithdraw($withDrawDto->amount, $lockedAccount);
+            if (!$validateAccount){
+                throw new InsufficientFundsException('Account is blocked or balance amount is insufficient');
+            } 
+
+            $accountDto = AccountDto::fromModelToDto($lockedAccount);
+
+            $transactionDto = new TransactionDto();
+            $reference = $this->transactionService->generateReference(); 
+            $transactionDto = $transactionDto->forWithdraw($accountDto, $withDrawDto->amount, $reference, $withDrawDto->description, $withDrawDto->transfer_id);
+            
+            event(new WithDrawEvent($transactionDto, $accountDto, $lockedAccount));
+            DB::commit();
+            return $transactionDto;
+        }
+        catch(Exception $e){
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
+    public function canWithdraw(int|float $amount, Account $account): bool {
+        $maximum_withdraw = $account->balance; 
+        if($amount > $maximum_withdraw || $account->status == AccountStatus::FROZEN->value || $account->status == AccountStatus::CLOSED->value) {
+            return false;
+        }
+        return true;
+    }
+
     public function accountExists(Builder $query) {
         if(!$query->exists()){
             throw new ModelNotFoundException('Invalid account number');
         } 
-    }
-
+    } 
 }
